@@ -1,15 +1,35 @@
 $(function () {
   getUserInfo();
-})
+  var layer = layui.layer;
 
+  // 点击按钮，实现退出功能
+  $('#btnLogout').on('click', function () {
+    layer.confirm('确认退出登录？', { icon: 3, title: '提示' }, function (index) {
+      //do something
+
+      // 1. 清空本地存储中的token
+      // 2. 跳转到登录页面
+      localStorage.removeItem('token')
+
+      // location.assign('/login.html');
+      location.href = './login.html';
+
+      layer.close('ok');
+    });
+
+  });
+
+
+});
+
+
+// 获取用户的基本信息
 function getUserInfo() {
   $.ajax({
     method: 'GET',
     url: 'my/userinfo',
-    // 请求头   headers：就是
-    headers: {
-      Authorization: localStorage.getItem('token') || ''
-    },
+    // 请求头   headers：就是请求配置对象
+
     success: function (res) {
       console.log(res);
       if (res.status != 0) {
@@ -18,9 +38,21 @@ function getUserInfo() {
       }
       renderAvatar(res.data)
 
+    },
+
+    // 不管请求成功还是失败，最终都会调用complete函数
+    // 请求失败则执行该代码，如果成功则不执行
+    complete: function (res) {
+      if (res.responseJSON.status == 1 && res.responseJSON.message == '身份认证失败！') {
+        // 强制将数据清空
+        localStorage.removeItem('token');
+        // 跳转到登录页面
+        location.href = './login.html';
+      }
     }
-  });
+  })
 };
+// window.getUserInfo=getUserInfo;
 
 // 渲染用户的头像
 function renderAvatar(user) {
@@ -43,4 +75,6 @@ function renderAvatar(user) {
       .html(first)
       .show();
   }
-}
+};
+
+

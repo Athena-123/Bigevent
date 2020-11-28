@@ -28,6 +28,8 @@ $(function(){
     }
   });
 
+
+
   $('#formReg').on('submit',function(e){
     e.preventDefault();
     $.ajax({
@@ -48,6 +50,7 @@ $(function(){
     });
   });
 
+  
   $('#form_login').submit(function(e){
     e.preventDefault();
     $.ajax({
