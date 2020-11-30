@@ -31,6 +31,7 @@ $(function () {
   }
 
   initTable();
+  initCate();
   // 获取列表数据
   function initTable() {
     $.ajax({
@@ -42,7 +43,7 @@ $(function () {
         if (res.status != 0) {
           return layui.layer.msg('获取列表数据失败!')
         }
-        layui.layer.msg('获取列表数据成功')
+        // layui.layer.msg('获取列表数据成功')
         // 使用模板引擎渲染页面的数据
         var str = template('tpl-table', res);
         $('tbody').html(str);
@@ -52,7 +53,7 @@ $(function () {
     })
   }
 
-  initCate();
+
   // 初始化文章分类的方法
   function initCate() {
     $.ajax({
@@ -125,7 +126,7 @@ $(function () {
     layui.layer.confirm('确认删除?', { icon: 3, title: '提示' }, function (index) {
       $.ajax({
         method: 'GET',
-        url: '/my/article/delete/' + id,
+        url: 'my/article/delete/' + id,
         success: function (res) {
           if (res.status !== 0) {
             return layui.layer.msg('删除文章失败！')
