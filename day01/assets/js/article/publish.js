@@ -69,8 +69,11 @@ $(function () {
   $('#form-pub').on('submit', function (e) {
     // 1. 阻止表单的默认提交行为
     e.preventDefault();
+
     // 2. 基于 form 表单，快速创建一个 FormData 对象
-    var fd = new FormData($(this)[0])
+    // var fd = new FormData($(this)[0])
+    var fd = new FormData(this)
+    
     // 3. 将文章的发布状态，存到 fd 中
     fd.append('state', art_state)
 
@@ -98,10 +101,12 @@ $(function () {
       method: 'POST',
       url: 'my/article/add',
       data: fd,
-      // 注意：如果向服务器提交的是 FormData 格式的数据，
+
+      // 【注意】：如果向服务器提交的是 FormData 格式的数据，
       // 必须添加以下两个配置项
       contentType: false,
       processData: false,
+
       success: function(res) {
         if (res.status !== 0) {
           return layui.layer.msg('发布文章失败！')
@@ -113,4 +118,7 @@ $(function () {
     })
   }
 
+
+
+  
 })
